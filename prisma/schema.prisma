@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// the users table should be already there from the initial app setup
+model User {
+  id        String   @id @unique 
+  createdAt DateTime 
+  updatedAt DateTime @updatedAt
+  data     Data[]
+}
+
+model Data {
+  id        String   @id @default(uuid())
+  timestamp String 
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  cpu       Float
+}
